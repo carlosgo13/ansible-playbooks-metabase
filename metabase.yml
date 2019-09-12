@@ -1,0 +1,89 @@
+---
+- name: Install metabase app
+
+  hosts: metabase_app
+
+  become: yes
+
+  vars:
+
+    metabase_host_port: 3000
+    metabase_container_port: 3000
+    metabase_db_pass: metabase
+
+  roles:
+
+    - nephelaiio.plugins
+    - nephelaiio.docker
+
+  tasks:
+
+    - name: verify variable definitions
+      fail:
+        msg: "metabase_db_pass variable must be defined"
+      when:
+        - metabase_db_pass is not defined
+
+    - name: install metabase
+      include_role:
+        name: mhutter.docker-systemd-service
+      vars:
+        container_name: "{{ metabase_app_container | default('metabase') }}"
+        container_image: "metabase/metabase:{{ metabase_app_tag | default('v0.33.2') }}"
+        container_ports:
+          - '{{ metabase_host_port }}:{{ metabase_container_port }}'
+        container_env:
+          MB_DB_TYPE: postgres
+          MB_DB_DBNAME: "{{ metabase_db_name | default('metabase') }}"
+          MB_DB_PORT: "{{ metabase_db_port | default(5432) }}"
+          MB_DB_USER: "{{ metabase_db_user | default('metabase') }}"
+          MB_DB_PASS: "{{ metabase_db_pass }}"
+          MB_DB_HOST: "{{ metabase_db_host | default(ansible_default_ipv4.address) }}"
+
+    - name: install local nginx proxy
+      include_role:
+        name: nginxinc.nginx
+      vars:
+        nginx_install_from: os_repository
+        nginx_cleanup_config: yes
+        nginx_cleanup_config_path:
+          - /etc/nginx/conf.d
+        nginx_http_template_enable: yes
+        nginx_http_template:
+          http:
+            port: 80
+            server_name: "{{ ansible_fqdn }}"
+            conf_file_name: "{{ ansible_fqdn }}.http.conf"
+            returns:
+              favicon:
+                location: /favicon.ico
+                code: "204; access_log off ; log_not_found off"
+            reverse_proxy:
+              locations:
+                default:
+                  location: /
+                  proxy_pass: "http://metabase"
+                  proxy_set_header:
+                    header_host:
+                      name: Host
+                      value: $host
+                    header_upgrade:
+                      name: Upgrade
+                      value: $http_upgrade
+                    header_connection:
+                      name: Connection
+                      value: Upgrade
+                    header_x_forwarded_for:
+                      name: X-Forwarded-For
+                      value: $proxy_add_x_forwarded_for
+            upstreams:
+              metabase:
+                name: metabase
+                lb_method: least_conn
+                zone_name: metabase
+                zone_size: 32k
+                sticky_cookie: false
+                servers:
+                  localhost:
+                    address: 127.0.0.1
+                    port: "{{ metabase_host_port }}"

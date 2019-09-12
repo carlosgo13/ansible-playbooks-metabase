@@ -1,0 +1,63 @@
+---
+- name: Install metabase db
+
+  hosts: metabase_db
+
+  become: yes
+
+  vars:
+
+    metabase_db_pass: metabase
+    metabase_docker_net: ansible_docker0
+
+  roles:
+
+    - nephelaiio.plugins
+
+  pre_tasks:
+
+    - name: gather metabase app metadata
+      setup:
+      with_items: "{{ groups['metabase_app'] }}"
+      delegate_to: "{{ item }}"
+
+  tasks:
+
+    - name: verify variable definitions
+      fail:
+        msg: "metabase_db_pass variable must be defined"
+      when:
+        - metabase_db_pass is not defined
+
+    - name: install postgresql
+      include_role:
+        name: geerlingguy.postgresql
+      vars:
+        postgresql_global_config_options:
+          - option: listen_addresses
+            value: "*"
+        postgresql_databases:
+          - name: "{{ metabase_db_name | default('metabase') }}"
+        postgresql_hba_entries:
+          - type: local
+            database: all
+            user: postgres
+            auth_method: peer
+          - type: local
+            database: all
+            user: all
+            auth_method: peer
+          - type: host
+            address: "0.0.0.0/0"
+            database: "{{ metabase_db_name | default('metabase') }}"
+            user: "{{ metabase_db_user | default('metabase') }}"
+            auth_method: md5
+
+    - name: create postgresql users
+      postgresql_user:
+        name: "{{ metabase_db_user | default('metabase') }}"
+        password: "{{ metabase_db_pass }}"
+        db: "{{ metabase_db_name | default('metabase') }}"
+        priv: ALL
+      become_user: postgres
+      
