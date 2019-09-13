@@ -7,7 +7,6 @@
 
   vars:
 
-    metabase_db_pass: metabase
     metabase_docker_net: ansible_docker0
 
   roles:

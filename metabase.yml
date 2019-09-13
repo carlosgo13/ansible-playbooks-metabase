@@ -9,7 +9,6 @@
 
     metabase_host_port: 3000
     metabase_container_port: 3000
-    metabase_db_pass: metabase
 
   roles:
 
