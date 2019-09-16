@@ -39,6 +39,7 @@
           MB_DB_USER: "{{ metabase_db_user | default('metabase') }}"
           MB_DB_PASS: "{{ metabase_db_pass }}"
           MB_DB_HOST: "{{ metabase_db_host | default(ansible_default_ipv4.address) }}"
+          MB_ENCRYPTION_SECRET_KEY: "{{ metabase_encryption_secret_key }}"
 
     - name: install local nginx proxy
       include_role:
