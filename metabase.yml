@@ -9,6 +9,7 @@
 
     metabase_host_port: 3000
     metabase_container_port: 3000
+    docker_log_conf_manage: yes
 
   roles:
 
