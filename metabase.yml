@@ -59,7 +59,7 @@
           http:
             port: 80 default_server
             server_name: _
-            conf_file_name: "{{ ansible_fqdn }}.http.conf"
+            conf_file_name: "metabase.http.conf"
             returns:
               favicon:
                 location: /favicon.ico
