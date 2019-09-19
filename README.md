@@ -27,7 +27,7 @@ The following parameters are available/required for playbook invocation
 | no       | metabase_db_name               | metabase db name                       | metabase                             |
 | no       | metabase_db_host               | metabase db access host                | "{{ ansible_default_ipv4.address }}" |
 | no       | metabase_db_port               | metabase db access port                | 5432                                 |
-| no       | metabase_maxmem_mb             | maximum memory for metabase container  | "{{ ansible_memtotal_mb - 1024 }}"   |
+| no       | metabase_maxmem_mb             | maximum memory for metabase container  | "{{ ansible_memtotal_mb - 1024 }}M"  |
 | no       | metabase_encryption_secret_key | metabase credential encryption key (*) | n/a                                  |
 
 (*) See [https://metabase.com/docs/v0.33.0/operations-guide/encrypting-database-details-at-rest.html](credential encryption) documentation for more details

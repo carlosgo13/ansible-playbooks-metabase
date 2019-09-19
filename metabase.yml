@@ -30,7 +30,7 @@
         name: mhutter.docker-systemd-service
       vars:
         container_name: "{{ metabase_app_container | default('metabase') }}"
-        container_args: "-m {{ metabase_maxmem_mb | default(ansible_memtotal_mb - 1024) }}"
+        container_args: "-m {{ metabase_maxmem_mb | default(ansible_memtotal_mb - 1024) }}M"
         container_image: "metabase/metabase:{{ metabase_app_tag | default('v0.33.2') }}"
         container_ports:
           - '{{ metabase_host_port }}:{{ metabase_container_port }}'
