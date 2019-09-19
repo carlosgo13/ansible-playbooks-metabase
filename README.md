@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/nephelaiio/ansible-playbooks-metabase.svg?branch=master)](https://travis-ci.org/nephelaiio/ansible-playbooks-metabase)
 
-Ansible playbook to install [https://metabase.com](Metabase)
+Ansible playbook to install [Metabase](https://metabase.com)
 
 ## Playbook descriptions
 
@@ -30,7 +30,7 @@ The following parameters are available/required for playbook invocation
 | no       | metabase_maxmem_mb             | maximum memory for metabase container  | "{{ ansible_memtotal_mb - 1024 }}M"  |
 | no       | metabase_encryption_secret_key | metabase credential encryption key (*) | n/a                                  |
 
-(*) See [https://metabase.com/docs/v0.33.0/operations-guide/encrypting-database-details-at-rest.html](credential encryption) documentation for more details
+(*) See [credential encryption](https://metabase.com/docs/v0.33.0/operations-guide/encrypting-database-details-at-rest.html) documentation for more details
 
 ### [postgresql.yml](postgresql.yml):
 | required | variable         | description                 | default                              |
@@ -45,7 +45,7 @@ The following parameters are available/required for playbook invocation
 
 This playbook has the following git submodule dependencies:
 
-* [https://github.com/dw/mitogen](plugins/mitogen)
+* [plugins/mitogen](https://github.com/dw/mitogen)
 
 ## Example Invocation
 
