@@ -42,6 +42,7 @@
           MB_DB_PASS: "{{ metabase_db_pass }}"
           MB_DB_HOST: "{{ metabase_db_host | default(ansible_default_ipv4.address) }}"
           MB_ENCRYPTION_SECRET_KEY: "{{ metabase_encryption_secret_key }}"
+          JAVA_OPTS: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
 
     - name: install local nginx proxy
       include_role:
