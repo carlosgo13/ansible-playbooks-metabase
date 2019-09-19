@@ -52,11 +52,13 @@
         nginx_cleanup_config: yes
         nginx_cleanup_config_path:
           - /etc/nginx/conf.d
+          - /etc/nginx/sites-enabled
+          - /etc/nginx/sites-available
         nginx_http_template_enable: yes
         nginx_http_template:
           http:
-            port: 80
-            server_name: "{{ ansible_fqdn }}"
+            port: 80 default_server
+            server_name: _
             conf_file_name: "{{ ansible_fqdn }}.http.conf"
             returns:
               favicon:
