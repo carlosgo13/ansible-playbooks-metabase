@@ -1,0 +1,29 @@
+---
+galaxy_info:
+  role_name: metabase
+  author: nephelaiio
+  description: An Ansible role to install and configure metabase
+  license: MIT
+  min_ansible_version: 2.2
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: Archlinux
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - focal
+    - name: Debian
+      versions:
+        - stretch
+  galaxy_tags:
+    - metabase
+
+dependencies:
+  - role: nephelaiio.plugins
+  - role: mhutter.docker-systemd-service
+  - role: geerlingguy.postgresql
+  - role: nephelaiio.docker
+  - role: nginxinc.nginx
