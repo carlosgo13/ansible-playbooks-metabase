@@ -1,12 +1,12 @@
 ---
 - src: nephelaiio.plugins
-  version: 1.0.15
+  version: 2.0.1
 - src: https://github.com/mhutter/ansible-docker-systemd-service.git
   version: master
   name: mhutter.docker-systemd-service
 - src: geerlingguy.postgresql
-  version: 1.4.6
+  version: 3.1.0
 - src: nephelaiio.docker
-  version: 4.0.5
+  version: 5.0.5
 - src: nginxinc.nginx
-  version: 0.12.0
+  version: 0.19.2
